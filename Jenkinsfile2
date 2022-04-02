@@ -1,5 +1,5 @@
 pipeline {    
-       
+     stages{  
       stage('Clone repository') {               
              
             checkout scm    
@@ -20,6 +20,7 @@ pipeline {
        app.push("latest")        
               }    
            }
+         }
        }
       
        
