@@ -47,6 +47,7 @@ pipeline{
                 expression { params.DEPLOY == true }
             }
             steps{
+             input 'Deploy to Production?'
                 echo "Now we begin DEPLOY"
             }
         }
