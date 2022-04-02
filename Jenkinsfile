@@ -19,7 +19,7 @@ pipeline {
    stage('Building our image') {
             steps {
                 script {
-                    dockerImage = docker.build "st251/web_server:$BUILD_NUMBER"
+                    dockerImage = docker.build "st251/web_server:$BUILD_NUMBER" .
                     dockerImage = docker.build "st251/web_server:latest"
                 }
             }
