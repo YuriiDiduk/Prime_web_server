@@ -1,6 +1,5 @@
 node {
     def app
-    agent any
     parameters {
         booleanParam (
             defaultValue: true,
