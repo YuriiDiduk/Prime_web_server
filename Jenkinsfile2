@@ -3,15 +3,15 @@ pipeline{
     parameters {
         booleanParam (
             defaultValue: true,
-            description: '',
+            description: 'Compile and testing SonarQube',
             name: 'TEST')
         booleanParam (
             defaultValue: true,
-            description: '',
+            description: 'Build and push images to DockerHub',
             name: 'BUILD')
         booleanParam (
             defaultValue: true,
-            description: '',
+            description: 'Deploy to K8S',
             name: 'DEPLOY')
     }
     stages{
