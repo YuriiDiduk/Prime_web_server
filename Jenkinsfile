@@ -1,7 +1,7 @@
 pipeline {
 
   environment {
-     commit = 'csmsmcmdvmsdvmd'
+     commit = 'csmsmcmdwvmsdvmd'
   }
   agent any
   options {
