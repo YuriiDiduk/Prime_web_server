@@ -21,7 +21,7 @@ pipeline{
                 expression { params.TEST == true }
             }
             steps {
-               echo "Now we begin TEST"
+               echo "Now we begin UNIT TEST"
             }
         }
         stage('Test frontend'){
@@ -30,6 +30,14 @@ pipeline{
             }
             steps {
                 echo "Now we begin TEST2"
+            }
+        }
+        stage('Test frontend 2'){
+            when {
+                expression { params.TEST == true }
+            }
+            steps {
+                echo "Now we begin SMOKE TEST"
             }
         }
 
