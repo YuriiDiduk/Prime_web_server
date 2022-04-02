@@ -1,47 +1,53 @@
-pipeline { 
- agent any
-     stages{  
-      stage('Clone repository') {               
-          steps {    
-            checkout scm  
+pipeline{
+    agent any
+    parameters {
+        booleanParam (
+            defaultValue: true,
+            description: '',
+            name: 'TEST')
+        booleanParam (
+            defaultValue: true,
+            description: '',
+            name: 'BUILD')
+        booleanParam (
+            defaultValue: true,
+            description: '',
+            name: 'DEPLOY')
+    }
+    stages{
+        
+        stage('Test backend'){
+            when {
+                expression { params.TEST == true }
             }
-      }     
-      stage('Build image') {         
-        steps {
-              sh 'docker build --tag "st251/web_server".'
-                }
-       }   
-      stage('Building our image') {
             steps {
-                script {
-                    dockerImage = docker.build "st251/web_server:$BUILD_NUMBER"
-                    dockerImage = docker.build "st251/web_server:latest"
-                }
+               echo "Now we begin TEST"
             }
         }
-   stage('push to DHub') {
-            steps {
-                script {
-                    // Assume the Docker Hub registry by passing an empty string as the first parameter
-                    docker.withRegistry('' , 'dockerhub-st251-jenkins') {
-                        dockerImage.push()
-                        docker push "${REGISTRY_NAME}:${GIT_BRANCH}-${GIT_COMMIT}"
-                    }
-                }
+        stage('Test frontend'){
+            when {
+                expression { params.TEST == true }
             }
-        } 
-      stage('Test image') { 
-       steps {
-           echo '${GIT_BRANCH}-${GIT_COMMIT}'  
-           }
-        }     
-       stage('Push image') {
-        steps {
-    echo 'end' 
-               }
-              }    
-           }
-         }
-       
-      
-       
+            steps {
+                echo "Now we begin TEST2"
+            }
+        }
+
+        stage('Build frontend'){
+            when {
+                expression { params.BUILD == true }
+            }
+            steps{
+                echo "Now we begin BUILD"
+            }
+        }
+        stage('Deploy'){
+            when {
+                expression { params.DEPLOY == true }
+            }
+            steps{
+                echo "Now we begin DEPLOY"
+            }
+        }
+    }
+}
