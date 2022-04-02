@@ -40,7 +40,7 @@ pipeline {
             }
             steps{
                 echo "Now we begin BUILD"
-                sh 'docker build -t st251/web_server:${env.BUILD_NUMBER} .'
+                sh "docker build -t st251/web_server:${env.BUILD_NUMBER} ."
             }
         }
         stage('Deploy'){
