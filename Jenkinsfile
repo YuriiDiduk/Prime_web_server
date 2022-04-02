@@ -10,31 +10,29 @@ pipeline {
     buildDiscarder(logRotator(numToKeepStr: '5'))
   }
   
-   stages {
-     stage('DockerLint') {
-       steps {       
-            echo 'OK' 
+stages { 
+  stage('DockerLint') {
+      steps {       
+            sh 'docker run --rm -i hadolint/hadolint < Dockerfile' 
              }
         }
-   stage('Building our image') {
+    stage('Building our image') {
             steps {
                 script {
-                    dockerImage = docker.build "st251/web_server:$BUILD_NUMBER" .
-                    dockerImage = docker.build "st251/web_server:latest"
-                }
+                    app = docker.build("st251/web_server")
+                }  
             }
         }
-   stage('push to DHub') {
+   stage('Push Docker Image') {
             steps {
                 script {
-                    // Assume the Docker Hub registry by passing an empty string as the first parameter
-                    docker.withRegistry('' , 'dockerhub-st251-jenkins') {
-                       
-                        docker push ${REGISTRY_NAME}$GIT_BRANCH-$GIT_COMMIT
+                    docker.withRegistry('https://registry.hub.docker.com', 'dockerhub-st251-jenkins') {
+                        app.push("${env.BUILD_NUMBER}")
+                        app.push("latest")
                     }
                 }
             }
-        } 
+        }
    stage('docker run') {
             steps {
                   sh 'docker run --name web_server -p 8282:8282'
