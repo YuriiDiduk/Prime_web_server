@@ -15,7 +15,8 @@ pipeline{
             name: 'DEPLOY')
     }
     stages{
-      stage('Compile'){
+        
+        stage('Compile'){
             when {
                 expression { params.TEST == true }
             }
@@ -23,7 +24,7 @@ pipeline{
          sh 'mvn compile' //only compilation of the code
        }
     }
-      stage('SonarQube'){
+        stage('SonarQube'){
             when {
                 expression { params.TEST == true }
             }
@@ -32,7 +33,6 @@ pipeline{
         sh 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.9.0.2155:sonar'
         }
       }
-    }
        steps {
   timeout(time: 1, unit: 'HOURS') { // Just in case something goes wrong, pipeline will be killed after a timeout
     def qg = waitForQualityGate() // Reuse taskId previously collected by withSonarQubeEnv
@@ -41,7 +41,12 @@ pipeline{
     }
   }
 }
-      stage('Build and push image to DHub'){
+       steps {       
+            sh 'docker run --rm -i hadolint/hadolint < Dockerfile1' 
+             }
+     }
+             
+        stage('Build and push image to DHub'){
             when {
                 expression { params.BUILD == true }
             }
@@ -61,7 +66,7 @@ pipeline{
             }
         }
      
-      stage('Deploy'){
+        stage('Deploy'){
             when {
                 expression { params.DEPLOY == true }
             }
