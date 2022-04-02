@@ -22,6 +22,7 @@ pipeline{
             }
             steps {
                echo "Now we begin UNIT TEST"
+               echo "Now we begin UNIT TEST on ${env.BRANCH_NAME}"
             }
         }
         stage('Test frontend'){
