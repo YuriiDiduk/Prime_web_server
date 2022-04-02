@@ -19,8 +19,7 @@ pipeline {
    stage('Building our image') {
             steps {
                 script {
-                    dockerImage = docker.build "st251/web_server:$BUILD_NUMBER"
-                    dockerImage = docker.build "st251/web_server:latest"
+                docker build -t ${IMAGE_NAME}${VERSION_PREFIX}${BUILD_NUMBER} ${WORKSPACE} -f Dockerfile
                 }
             }
         }
@@ -29,7 +28,7 @@ pipeline {
                 script {
                     // Assume the Docker Hub registry by passing an empty string as the first parameter
                     docker.withRegistry('' , 'dockerhub-st251-jenkins') {
-                        dockerImage.push()
+                       
                         docker push ${REGISTRY_NAME}$GIT_BRANCH-$GIT_COMMIT
                     }
                 }
