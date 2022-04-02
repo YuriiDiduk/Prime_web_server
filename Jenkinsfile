@@ -51,7 +51,7 @@ pipeline {
    stage('Remove Unused docker image') {
       steps{
         input 'Remove Unused docker image?'
-        sh "docker rmi ${REGISTRY_NAME}
+        sh "docker rmi ${REGISTRY_NAME}"
       }
     }
   }
