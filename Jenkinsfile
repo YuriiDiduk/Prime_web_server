@@ -18,9 +18,10 @@ pipeline {
         }
    stage('Building our image') {
             steps {
-                sh """
-                docker build -t ${IMAGE_NAME}${VERSION_PREFIX}${BUILD_NUMBER}${WORKSPACE} -f Dockerfile
-                """
+                script {
+                    dockerImage = docker.build "st251/web_server:$BUILD_NUMBER"
+                    dockerImage = docker.build "st251/web_server:latest"
+                }
             }
         }
    stage('push to DHub') {
