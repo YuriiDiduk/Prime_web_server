@@ -8,7 +8,7 @@ pipeline {
       }     
       stage('Build image') {         
         steps {
-              sh 'docker build -t "st251/web_server".'
+              sh 'docker build --tag "st251/web_server".'
                 }
        }   
       stage('Building our image') {
