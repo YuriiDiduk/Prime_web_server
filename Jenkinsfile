@@ -19,7 +19,7 @@ pipeline {
    stage('Building our image') {
             steps {
                 sh """
-                docker build -t ${IMAGE_NAME}${VERSION_PREFIX}${BUILD_NUMBER} ${WORKSPACE} -f Dockerfile
+                docker build -t ${IMAGE_NAME}${VERSION_PREFIX}${BUILD_NUMBER}${WORKSPACE} -f Dockerfile
                 """
             }
         }
