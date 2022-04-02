@@ -11,11 +11,6 @@ pipeline {
   }
   
 stages { 
-  stage('DockerLint') {
-      steps {       
-            sh 'docker run --rm -i hadolint/hadolint < Dockerfile' 
-             }
-        }
     stage('Building our image') {
             steps {
                 script {
