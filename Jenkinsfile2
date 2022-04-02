@@ -1,8 +1,5 @@
 pipeline { 
  agent any
-  environment{
-  COMMIT = sh(returnStdout: true, script: "git log -n 1 --pretty=format: '%h'").trim()
-  }
      stages{  
       stage('Clone repository') {               
           steps {    
@@ -11,9 +8,28 @@ pipeline {
       }     
       stage('Build image') {         
         steps {
-            echo '$COMMIT'  
+              sh ‘docker build -t st251/web_server.’
+                }
+       }   
+      stage('Building our image') {
+            steps {
+                script {
+                    dockerImage = docker.build "st251/web_server:$BUILD_NUMBER"
+                    dockerImage = docker.build "st251/web_server:latest"
+                }
             }
-       }     
+        }
+   stage('push to DHub') {
+            steps {
+                script {
+                    // Assume the Docker Hub registry by passing an empty string as the first parameter
+                    docker.withRegistry('' , 'dockerhub-st251-jenkins') {
+                        dockerImage.push()
+                        docker push ${REGISTRY_NAME}:${GIT_BRANCH}-${GIT_COMMIT}
+                    }
+                }
+            }
+        } 
       stage('Test image') { 
        steps {
            echo '${GIT_BRANCH}-${GIT_COMMIT}'  
@@ -22,7 +38,7 @@ pipeline {
        stage('Push image') {
         steps {
     echo 'end' 
-              }
+               }
               }    
            }
          }
