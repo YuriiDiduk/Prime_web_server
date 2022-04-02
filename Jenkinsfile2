@@ -50,12 +50,10 @@ pipeline {
             steps{
              input 'Deploy to Production?'
                 echo "Now we begin DEPLOY"
-                script {
-               docker.withRegistry(credentialsId: 'dockerhub-st251-jenkins', url: 'https://index.docker.io/v1/') {
+                withDockerRegistry(credentialsId: 'dockerhub-st251-jenkins', url: 'https://index.docker.io/v1/'){
                     sh "docker push st251/web_server:${env.BUILD_NUMBER}"
                     sh "docker push st251/web_server:${env.GIT_COMMITTER_NAME}"
                     sh "docker push st251/web_server:latest"
-                 }
               } 
             }
         }
