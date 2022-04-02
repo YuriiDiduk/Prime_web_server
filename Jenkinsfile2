@@ -42,9 +42,6 @@ pipeline{
                 echo "Now we begin BUILD"
             }
         }
-        post{
-            input 'Deploy to Production?' 
-        }
         stage('Deploy'){
             when {
                 expression { params.DEPLOY == true }
