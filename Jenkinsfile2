@@ -1,5 +1,5 @@
-node {
-    def app
+pipeline {
+  agent any
     parameters {
         booleanParam (
             defaultValue: true,
@@ -40,7 +40,7 @@ node {
             }
             steps{
                 echo "Now we begin BUILD"
-                app = docker.build("st251/web_server")
+                sh 'docker build -t st251/web_server:${env.BUILD_NUMBER} .'
             }
         }
         stage('Deploy'){
@@ -50,9 +50,10 @@ node {
             steps{
              input 'Deploy to Production?'
                 echo "Now we begin DEPLOY"
-             docker.withRegistry('https://registry.hub.docker.com', 'dockerhub-st251-jenkins') {
-               app.push("${env.BUILD_NUMBER}")
-               app.push("latest")
+               withDockerRegistry(credentialsId: 'dockerhub-st251-jenkins', url: 'https://index.docker.io/v1/') {
+                    sh '''
+                        docker push st251/web_server:${env.BUILD_NUMBER}
+                    '''
               } 
             }
         }
