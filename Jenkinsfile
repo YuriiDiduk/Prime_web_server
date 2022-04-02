@@ -11,19 +11,19 @@ pipeline {
 stages { 
     stage('Building our image') {
             steps {
-                script {
+        
                   echo "dfjkdfk ${commit}"
-                }  
+      
             }
         }
-   stage('Push Docker Image') {
+    stage('Push Docker Image') {
             steps {
-                script {
+             
                     echo "this is ${commit}"
-                    }
+                
                 }
             }
-        }
+       
    stage('docker run') {
             steps {
                   echo "this is ${env.BUILD_NUMBER} on ${env.JENKINS_URL}"
@@ -37,4 +37,4 @@ stages {
       }
     }
   }
-   
+}
