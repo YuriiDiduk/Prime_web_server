@@ -14,9 +14,8 @@ pipeline {
             description: 'Deploy to K8S',
             name: 'DEPLOY')
     }
-    stages{
-        
-        stage('Test backend'){
+     stages{
+       stage('Test backend'){
             when {
                 expression { params.TEST == true }
             }
@@ -25,7 +24,7 @@ pipeline {
                echo "Now we begin UNIT TEST on ${env.BRANCH_NAME}"
             }
         }
-        stage('Test frontend 2'){
+       stage('Test frontend 2'){
             when {
                 expression { params.TEST == true }
             }
@@ -34,20 +33,20 @@ pipeline {
             }
         }
 
-        stage('Build frontend'){
+       stage('Build frontend'){
             when {
                 expression { params.BUILD == true }
-            }
-            steps{
+               }
+            steps {
                 echo "Now we begin BUILD"
                 sh "docker build -t st251/web_server:${env.BUILD_NUMBER} ."
                  }
               }
-        stage('push'){
+       stage('push') {
             when {
                 expression { params.BUILD == true }
-            }
-           steps{
+               }
+           steps {
                 echo "Now we begin push"
                 withDockerRegistry(credentialsId: 'dockerhub-st251-jenkins', url: 'https://index.docker.io/v1/'){
                     sh "docker push st251/web_server:${env.BUILD_NUMBER}"
@@ -55,6 +54,7 @@ pipeline {
                     sh "docker rmi st251/web_server:${env.BUILD_NUMBER}"           
                  } 
              }
+           }
         stage('Deploy'){
             when {
                 expression { params.DEPLOY == true }
