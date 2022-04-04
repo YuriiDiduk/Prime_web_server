@@ -20,7 +20,6 @@ pipeline {
                 expression { params.TEST == true }
             }
             steps {
-               echo "$DOCKER_IMAGE_TAG"
                echo "Now we begin UNIT TEST on ${env.BRANCH_NAME}"
             }
         }
