@@ -41,31 +41,33 @@ pipeline {
             steps{
                 echo "Now we begin BUILD"
                 sh "docker build -t st251/web_server:${env.BUILD_NUMBER} ."
-               }
+                 }
+              }
+        stage('push'){
+            when {
+                expression { params.BUILD == true }
+            }
            steps{
                 echo "Now we begin push"
                 withDockerRegistry(credentialsId: 'dockerhub-st251-jenkins', url: 'https://index.docker.io/v1/'){
                     sh "docker push st251/web_server:${env.BUILD_NUMBER}"
                     sleep 60
-                    sh "docker rmi st251/web_server:${env.BUILD_NUMBER}"
-                 
-              } 
-        }
+                    sh "docker rmi st251/web_server:${env.BUILD_NUMBER}"           
+                 } 
+             }
         stage('Deploy'){
             when {
                 expression { params.DEPLOY == true }
             }
             steps{
-             input 'Deploy to Production?'
-             
-            steps{
+             input 'Deploy to Production?'       
                 milestone(1)
                 kubernetesDeploy(
                     kubeconfigId: 'kubeconfig',
                     configs: 'web_deploy.yml',
                     enableConfigSubstitution: true
                  )
-                }
+               
               } 
             }
         }
