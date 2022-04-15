@@ -15,15 +15,7 @@ pipeline {
             name: 'DEPLOY')
     }
      stages{
-       stage('Test backend'){
-            when {
-                expression { params.TEST == true }
-            }
-            steps {
-               echo "Now we begin UNIT TEST on ${env.BRANCH_NAME}"
-            }
-        }
-       stage('Test frontend 2'){
+       stage('Test'){
             when {
                 expression { params.TEST == true }
             }
@@ -32,7 +24,7 @@ pipeline {
             }
         }
 
-       stage('Build frontend'){
+       stage('D-Build'){
             when {
                 expression { params.BUILD == true }
                }
@@ -41,7 +33,7 @@ pipeline {
                 sh "docker build -t st251/web_server:${env.BUILD_NUMBER} ."
                  }
               }
-       stage('push') {
+       stage('D-push') {
             when {
                 expression { params.BUILD == true }
                }
