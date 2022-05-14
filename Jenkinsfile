@@ -52,7 +52,7 @@ pipeline {
             }
             steps{
              input 'Deploy to Production?'       
-                milestone(1)
+                
                 kubernetesDeploy(
                     kubeconfigId: 'kubeconfig',
                     configs: 'web_deploy.yml',
