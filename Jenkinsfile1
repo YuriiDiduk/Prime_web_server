@@ -51,7 +51,9 @@ pipeline {
                 expression { params.DEPLOY == true }
             }
             steps{
-              sh './kubectl get pods'
+              sh 'eksctl version
+                  kubectl version --short --client
+                  '
               } 
             }
         }
