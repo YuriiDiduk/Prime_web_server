@@ -51,9 +51,10 @@ pipeline {
                 expression { params.DEPLOY == true }
             }
             steps{
-              sh 'eksctl version
+              sh '''
+                  eksctl version
                   kubectl version --short --client
-                  '
+                  '''
               } 
             }
         }
