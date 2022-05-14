@@ -51,10 +51,10 @@ pipeline {
                 expression { params.DEPLOY == true }
             }
             steps{
-             script {
+              sh label: '', script '''
                       kubectl get nodes -o wide
                       kubectl get svc
-                    }
+                    '''
               } 
             }
         }
