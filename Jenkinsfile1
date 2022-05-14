@@ -51,7 +51,9 @@ pipeline {
                 expression { params.DEPLOY == true }
             }
             steps{
-             sh "kubectl get nodes -o wide"
+             script: "kubectl get nodes -o wide
+                      kubectl get svc
+                      "
                
               } 
             }
