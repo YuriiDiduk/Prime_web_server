@@ -39,7 +39,7 @@ pipeline {
                }
            steps {
                 echo "Now we begin push"
-                withDockerRegistry(credentialsId: 'Dhub-cres', url: 'https://index.docker.io/v1/'){
+                withDockerRegistry(credentialsId: 'dockerhub-st251-jenkins', url: 'https://index.docker.io/v1/'){
                     sh "docker push st251/web_server:${env.BUILD_NUMBER}"
                     sleep 60
                     sh "docker rmi st251/web_server:${env.BUILD_NUMBER}"           
@@ -50,15 +50,9 @@ pipeline {
             when {
                 expression { params.DEPLOY == true }
             }
-            steps{
-             input 'Deploy to Production?'       
+            steps{       
                 
-                kubernetesDeploy(
-                    kubeconfigId: 'kubeconfig',
-                    configs: 'web_deploy.yml',
-                    enableConfigSubstitution: true
-                 )
-               
+                kubernetesDeploy configs: '', kubeConfig: [path: 'web_deploy.yml'], kubeconfigId: 'config'   
               } 
             }
         }
