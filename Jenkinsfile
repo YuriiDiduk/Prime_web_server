@@ -5,11 +5,13 @@ pipeline {
         stage('Deployx'){
           steps {
              script {
-                 withKubeConfig([credentialsId: 'config', serverUrl: '']) {
-                   sh 'kubectl apply -f web_deploy.yml'
+                 withKubeConfig(caCertificate: '', clusterName: '', contextName: '', credentialsId: 'config4', namespace: '', serverUrl: '') {
+                     sh 'kubectl apply -f web_deploy.yml'
+                             } 
+                   
                         }
                     }
                 }
             }
         }
-    }
+    
