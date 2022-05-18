@@ -4,12 +4,9 @@ pipeline {
 
         stage('Deployx'){
           steps {
-             script {
-                 withKubeConfig(caCertificate: '', clusterName: '', contextName: '', credentialsId: 'config4', namespace: '', serverUrl: '') {
-                     sh 'kubectl apply -f web_deploy.yml'
-                             } 
-                   
-                        }
+            script {
+                     sh 'kubectl get pods'
+            }
                     }
                 }
             }
