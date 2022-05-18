@@ -15,15 +15,6 @@ pipeline {
             name: 'DEPLOY')
     }
      stages{
-       stage('Test'){
-            when {
-                expression { params.TEST == true }
-            }
-            steps {
-                echo "Now we begin SMOKE TEST"
-            }
-        }
-
        stage('D-Build'){
             when {
                 expression { params.BUILD == true }
@@ -50,10 +41,9 @@ pipeline {
             when {
                 expression { params.DEPLOY == true }
             }
-            steps{       
-                
-                kubernetesDeploy configs: '', kubeConfig: [path: 'web_deploy.yml'], kubeconfigId: 'config'   
-              } 
+                 withKubeConfig([credentialsId: 'config', serverUrl: 'https://0ADC4FD916ACB6CB1B1D03BFDF743B73.gr7.us-east-1.eks.amazonaws.com']) {
+                   sh 'kubectl apply -f ./web_deploy.yml'
+                        }
             }
         }
     }
